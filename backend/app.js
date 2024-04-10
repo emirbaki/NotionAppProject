@@ -1,11 +1,21 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import express from "express";
+import path from "path";
+import { fileURLToPath } from 'url';
+import cors from "cors";
+import logger from "morgan";
+import cookieParser from "cookie-parser";
+
+import indexRouter from "./routes/index.js";
+import usersRouter from "./routes/users.js";
+
+import notes from "./routes/notes.js";
+
+const PORT = process.env.PORT || 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 var app = express();
 
@@ -21,6 +31,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/notes', require('./routes/notes'));
+app.use('/notes', notes);
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});

@@ -9,7 +9,6 @@ import {Note} from './utils/Interfaces';
 
 
 
-
 const MainPage: React.FC = () => {
     const [notes, setNotes] = useState<Note[]>([]);
     const [selectedNote, setSelectedNote] = useState<Note | null>(null);
