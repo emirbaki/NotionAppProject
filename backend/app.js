@@ -10,6 +10,7 @@ import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 
 import notes from "./routes/notes.js";
+import registration from "./routes/registration.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/notes', notes);
+app.use('/api', registration);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

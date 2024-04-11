@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for making HTTP requests
 
 const RegistrationPage: React.FC = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [_username, setUsername] = useState('');
+    const [_password, setPassword] = useState('');
 
     const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
             // Send the form data to the backend server
-            await axios.post('/api/registration', { username, password });
+            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password : _password });
+            console.log(response);
 
             // Clear the form fields after successful registration
             setUsername('');
@@ -43,7 +44,7 @@ const RegistrationPage: React.FC = () => {
                                 variant="outlined"
                                 type="text"
                                 label="Username"
-                                value={username}
+                                value={_username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
@@ -53,7 +54,7 @@ const RegistrationPage: React.FC = () => {
                                 variant="outlined"
                                 type="password"
                                 label="Password"
-                                value={password}
+                                value={_password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />

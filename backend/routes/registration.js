@@ -1,14 +1,13 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import db from '../db/connection.js';
+import { ObjectId } from 'mongodb';
+import express from 'express';
+import mongoose from "mongoose";
 
-const app = express();
-const PORT = 5000; // Or any port you prefer
 
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://admin:admin@dessistweb.j0eksb7.mongodb.net/', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+
+const router = express.Router();
+
+// Connect to MongoD
 
 // Define a schema for the user data
 const userSchema = new mongoose.Schema({
@@ -18,17 +17,21 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// Route to handle form submission
-app.post('/api/register', async (req, res) => {
-    const { username, password } = req.body;
-
-    // Save the user data to MongoDB
-    const newUser = new User({ username, password });
-    await newUser.save();
-
-    res.status(200).send('User registered successfully');
+router.get('/', function(req, res, next) {
+    res.send('respond with a resource');
+  });
+// Create a new note
+router.post('/register', async (req, res) => {
+    try{
+        const { username, password } = req.body;
+        const newUser = new User({ username, password });
+        const newNote = req.body;
+        const result = await db.collection('users').insertOne(newNote);
+        res.status(201).send('User added successfully with id: ${result.insertedId}');
+    } catch (err) {
+        console.error('Error adding note:', err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+export default router;
