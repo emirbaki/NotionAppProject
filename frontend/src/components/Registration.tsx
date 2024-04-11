@@ -1,23 +1,28 @@
 import React, { useState, FormEvent } from 'react';
 import { TextField, Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import axios from 'axios'; // Import Axios for making HTTP requests
 
-
-const LoginPage: React.FC = () => {
+const RegistrationPage: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Here you can add your authentication logic
-        // For example, you can send a request to your backend server to verify the credentials
 
-        // For demonstration, let's just log the username and password
-        console.log('Username:', username);
-        console.log('Password:', password);
+        try {
+            // Send the form data to the backend server
+            await axios.post('/api/registration', { username, password });
 
-        // After successful authentication, you can redirect the user to another page
-        // For example, you can use React Router: history.push('/dashboard');
+            // Clear the form fields after successful registration
+            setUsername('');
+            setPassword('');
+
+            // Optionally, you can redirect the user to another page
+            // history.push('/dashboard');
+        } catch (error) {
+            console.error('Error registering user:', error);
+        }
     };
 
     return (
@@ -31,8 +36,8 @@ const LoginPage: React.FC = () => {
         >
             <Grid item xs={3}>
                 <div style={{ textAlign: 'center' }}>
-                    <h2 style={{ textAlign: 'center' }}>Login</h2>
-                    <form onSubmit={handleLogin}>
+                    <h2 style={{ textAlign: 'center' }}>Sign Up</h2>
+                    <form onSubmit={handleRegister}>
                         <div style={{ marginBottom: '8px' }}>
                             <TextField
                                 variant="outlined"
@@ -53,17 +58,17 @@ const LoginPage: React.FC = () => {
                                 required
                             />
                         </div>
+
                         <div style={{ marginBottom: '16px' }}>
-                            <Button variant="contained" type="submit">Login</Button>
+                            <Button variant="contained" type="submit">Sign Up</Button>
                         </div>
                         <div>
-                            Are you not registered?
+                            Are you registered yet?
                             <div style={{ marginTop: '8px' }}>
-                            <Link to="/registration">
-                                <Button variant="contained">Sign Up</Button>
-                            </Link></div> 
+                                <Link to="/login">
+                                    <Button variant="contained">Login</Button>
+                                </Link></div>
                         </div>
-                        
                     </form>
                 </div>
             </Grid>
@@ -72,4 +77,4 @@ const LoginPage: React.FC = () => {
 
 };
 
-export default LoginPage;
+export default RegistrationPage;
