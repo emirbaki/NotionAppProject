@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
         const { username, password } = req.body;
         const newUser = new User({ username, password });
         const newNote = req.body;
-        const result = await db.collection('users').insertOne(newNote);
+        const result = await db.collection('users').insertOne(newUser);
         res.status(201).send('User added successfully with id: ${result.insertedId}');
     } catch (err) {
         console.error('Error adding note:', err);
