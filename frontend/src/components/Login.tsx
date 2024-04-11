@@ -1,20 +1,36 @@
 import React, { useState, FormEvent } from 'react';
 import { TextField, Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios'; // Import Axios for making HTTP requests
 
 const LoginPage: React.FC = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [_username, setUsername] = useState('');
+    const [_password, setPassword] = useState('');
 
-    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Here you can add your authentication logic
         // For example, you can send a request to your backend server to verify the credentials
 
         // For demonstration, let's just log the username and password
-        console.log('Username:', username);
-        console.log('Password:', password);
+        try {
+            // Send the form data to the backend server
+            const response = await axios.post('http://localhost:3000/api/login', { username: _username, password : _password });
+            console.log(response);
+            if(response.status === 200){
+
+            }
+            // Clear the form fields after successful registration
+            setUsername('');
+            setPassword('');
+            
+            window.location.href = "http://localhost:3001/";
+
+            // Optionally, you can redirect the user to another page
+            // history.push('/dashboard');
+        } catch (error) {
+            console.error('Error registering user:', error);
+        }
 
         // After successful authentication, you can redirect the user to another page
         // For example, you can use React Router: history.push('/dashboard');
@@ -38,7 +54,7 @@ const LoginPage: React.FC = () => {
                                 variant="outlined"
                                 type="text"
                                 label="Username"
-                                value={username}
+                                value={_username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
@@ -48,7 +64,7 @@ const LoginPage: React.FC = () => {
                                 variant="outlined"
                                 type="password"
                                 label="Password"
-                                value={password}
+                                value={_password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />

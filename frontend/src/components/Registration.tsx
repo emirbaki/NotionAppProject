@@ -26,6 +26,29 @@ const RegistrationPage: React.FC = () => {
         }
     };
 
+    const handleLogin = async (e:  React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // e.preventDefault();
+
+        try {
+            // Send the form data to the backend server
+            const response = await axios.post('http://localhost:3000/api/login', { username: _username, password : _password });
+            console.log(response);
+            if(response.status === 200){
+
+            }
+            // Clear the form fields after successful registration
+            setUsername('');
+            setPassword('');
+            
+            window.location.href = "http://localhost:3001/";
+
+            // Optionally, you can redirect the user to another page
+            // history.push('/dashboard');
+        } catch (error) {
+            console.error('Error registering user:', error);
+        }
+    };
+
     return (
         <Grid
             container
@@ -67,10 +90,10 @@ const RegistrationPage: React.FC = () => {
                             Are you registered yet?
                             <div style={{ marginTop: '8px' }}>
                                 <Link to="/login">
-                                    <Button variant="contained">Login</Button>
+                                    <Button variant="contained" onClick={handleLogin}>Login</Button>
                                 </Link></div>
                         </div>
-                    </form>
+                        </form>
                 </div>
             </Grid>
         </Grid>
