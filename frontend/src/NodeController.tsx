@@ -5,6 +5,7 @@ import { AppBar, Box, Grid, Toolbar, Typography } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import axios from 'axios';
 import {Note} from './utils/Interfaces';
+import mongoose from 'mongoose';
 
 
 
@@ -19,6 +20,9 @@ const MainPage: React.FC = () => {
 
     const readNotes = async () => {
         try {
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
             const response = await axios.get<Note[]>('http://localhost:3000/notes');
             setNotes(response.data);
         } catch (error) {
@@ -29,6 +33,9 @@ const MainPage: React.FC = () => {
     const updateNote = async (content : string) => {
         const id = selectedNote?.id
         try {
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
             await axios.put(`http://localhost:3000/notes/${id}`, {content_thing: content});
         } catch (error) {
             console.error('Error updating notes:', error);
@@ -36,16 +43,22 @@ const MainPage: React.FC = () => {
 
     };
 
-    const handleNoteClick = (id: number) => {
+    const handleNoteClick = (id: string) => {
+        console.log("clickten gelen id", id);
         const note = notes.find((note) => note.id === id);
+        if(note !== null) console.log("yalvarırım: " + note!.id);
         setSelectedNote(note || null);
     };
 
-    const deleteNote = async (id: number) => {
+    const deleteNote = async (id: string ) => {
+        console.log("Deleting note with ID:", id);
         try {
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
             await axios.delete(`http://localhost:3000/notes/${id}`);
             setNotes(notes.filter((note) => note.id !== id));
-            setSelectedNote(null);
+            // setSelectedNote(null);
         } catch (error) {
             console.error('Error deleting note:', error);
         }

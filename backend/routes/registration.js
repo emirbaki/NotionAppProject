@@ -1,13 +1,8 @@
 import db from '../db/connection.js';
-import { ObjectId } from 'mongodb';
 import express from 'express';
-import {User} from "../models/user.js";
-
-
+import {User} from "../models/userModel.js";
 
 const router = express.Router();
-
-
 
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');

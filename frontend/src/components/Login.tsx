@@ -14,17 +14,20 @@ const LoginPage: React.FC = () => {
 
         // For demonstration, let's just log the username and password
         try {
+            
+           
             // Send the form data to the backend server
             const response = await axios.post('http://localhost:3000/api/login', { username: _username, password : _password });
-            console.log(response);
             if(response.status === 200){
-
+                const token = response.data.token;
+                localStorage.setItem("token", token);
+                window.location.href = "http://localhost:3001/"
             }
             // Clear the form fields after successful registration
             setUsername('');
             setPassword('');
             
-            window.location.href = "http://localhost:3001/";
+            
 
             // Optionally, you can redirect the user to another page
             // history.push('/dashboard');
