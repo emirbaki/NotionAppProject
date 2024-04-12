@@ -33,7 +33,7 @@ const RegistrationPage: React.FC = () => {
             // Send the form data to the backend server
             const response = await axios.post('http://localhost:3000/api/login', { username: _username, password : _password });
             console.log(response);
-            if(response.status === 200){
+            if(response.status === 300){
 
             }
             // Clear the form fields after successful registration

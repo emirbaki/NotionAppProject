@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
 var app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001', // Replace with your React app's origin
+  origin: 'http://localhost:3001/', // Replace with your React app's origin
 }));
 
 app.use(logger('dev'));
