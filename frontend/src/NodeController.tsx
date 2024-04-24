@@ -1,12 +1,12 @@
 import './App.css';
 import NoteObject from './components/Note';
 import { useState, useEffect } from 'react';
-import { AppBar, Box, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Grid, Toolbar, Typography, Button } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import axios from 'axios';
 import {Note} from './utils/Interfaces';
-
-
+import { Link } from 'react-router-dom';
+import { User } from './utils/Interfaces';
 
 
 const MainPage: React.FC = () => {
@@ -56,6 +56,12 @@ const MainPage: React.FC = () => {
         console.log('Share note');
     };
 
+
+    const handleProfile = async () => {
+        console.log('Profile');
+
+    };
+
     return (
         <div>
             <AppBar position="static">
@@ -63,6 +69,9 @@ const MainPage: React.FC = () => {
                     <Typography variant="h6" color="inherit">
                         My Notes
                     </Typography>
+                    <Link to="/profile">
+                        <Button sx={{ marginLeft: '250px' }} onClick={handleProfile} variant="contained" disableElevation={true}>Profile</Button>
+                    </Link>
                 </Toolbar>
             </AppBar>
             <Box sx={{ display: 'flex', height: '100vh' }}>

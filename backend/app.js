@@ -11,6 +11,7 @@ import usersRouter from "./routes/users.js";
 
 import notes from "./routes/notes.js";
 import registration from "./routes/registration.js";
+import profile from "./routes/profile.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,7 +22,7 @@ const __dirname = path.dirname(__filename);
 var app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001/', // Replace with your React app's origin
+  origin: 'http://localhost:3001', // Replace with your React app's origin
 }));
 
 app.use(logger('dev'));
@@ -34,6 +35,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/notes', notes);
 app.use('/api', registration);
+app.use('/profile', profile);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

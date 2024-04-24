@@ -15,5 +15,8 @@ interface NoteContentProps {
     content?: string; // Optional content
     onUpdate: (content: string) => void;
 }
-
-export type {Note, NoteProps, NoteContentProps}
+interface User {
+    username: string;
+    password: string;
+}
+export type {Note, NoteProps, NoteContentProps, User}

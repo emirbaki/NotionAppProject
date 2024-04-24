@@ -31,16 +31,16 @@ const RegistrationPage: React.FC = () => {
 
         try {
             // Send the form data to the backend server
-            const response = await axios.post('http://localhost:3000/api/login', { username: _username, password : _password });
-            console.log(response);
-            if(response.status === 300){
-
+            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password : _password });
+            console.log(_username);
+            if(response.status === 201){
+                window.location.href = "http://localhost:3001/login";
             }
             // Clear the form fields after successful registration
             setUsername('');
             setPassword('');
             
-            window.location.href = "http://localhost:3001/";
+            
 
             // Optionally, you can redirect the user to another page
             // history.push('/dashboard');
