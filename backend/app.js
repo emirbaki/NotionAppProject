@@ -11,6 +11,8 @@ import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/userRoutes.js";
 import notesRouter from "./routes/noteRoutes.js";
 import connectDB from "./db/connection.js";
+import collectionRoutes from './routes/collectionRoutes.js';
+
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,6 +39,9 @@ app.use(errorHandler);
 app.use('/', indexRouter);
 app.use('/api', usersRouter);
 app.use('/notes', notesRouter);
+app.use('/collections', collectionRoutes);
+
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

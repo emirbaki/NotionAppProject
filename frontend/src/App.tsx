@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import MainPage from './NodeController';
 import LoginPage from './components/Login'
 import RegistrationPage from './components/Registration'
+import CollectionView from './components/Collections';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <Route path='/' element={<MainPage />}></Route>
       <Route path='/login' element={<LoginPage />}></Route>
       <Route path='/registration' element={<RegistrationPage />}></Route>
-
+      <Route path='/collections' element={<CollectionView />}></Route>
 
 
     </Routes>
