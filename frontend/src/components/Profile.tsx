@@ -1,15 +1,22 @@
 import React, { useState, FormEvent, useEffect } from 'react';
-import { TextField, Button, Grid, Alert, AppBar, Toolbar, Box} from '@mui/material';
+import { TextField, Button, Grid, Alert, AppBar, Toolbar, Box, Avatar, Divider, Popover } from '@mui/material';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for making HTTP requests
 import Typography from '@mui/material/Typography';
 import { User } from '../utils/Interfaces';
+import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar } from '../utils/Util.js';
+import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
 const ProfilePage: React.FC = () => {
     const [username, setUsername] = useState<String>();
     const [password, setPassword] = useState<String>();
     const [repeatPassword, setRepeatPassword] = useState<String>();
     const [error, setError] = useState<String>();
+    const [_email, setEmail] = useState<String>();
+    const [_name, setName] = useState<String>();
+    const [_surname, setSurname] = useState<String>();
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
 
 
     const _username = sessionStorage.getItem("username");
@@ -19,7 +26,7 @@ const ProfilePage: React.FC = () => {
         window.location.href = "http://localhost:3001/login";
 
     }
-    
+
     useEffect(() => {
         readProfile();
         setUsername('');
@@ -40,12 +47,14 @@ const ProfilePage: React.FC = () => {
 
     const readProfile = async () => {
         try {
-            const response = axios.get<User>('http://localhost:3000/profile');
+            const response = axios.get<User>(`http://localhost:3000/profile/${_username}`);
             response.then((user) => {
                 //setUsername(user.data.username);
                 //setPassword(user.data.password);
                 console.log(user.data.username);
-                console.log(user);
+                setEmail(user.data.email);
+                setName(user.data.name);
+                setSurname(user.data.surname);
             });
         } catch (error) {
             console.error('Error fetching notes:', error);
@@ -77,6 +86,26 @@ const ProfilePage: React.FC = () => {
             setError("Passwords don't match");
         }
     };
+
+    function HomeIcon(props: SvgIconProps) {
+        return (
+            <SvgIcon {...props}>
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+            </SvgIcon>
+        );
+    }
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
     return (
         <div>
             <AppBar position="static">
@@ -84,11 +113,15 @@ const ProfilePage: React.FC = () => {
                     <Typography variant="h6" color="inherit">
                         My Notes
                     </Typography>
+                    <Link to="/">
+                        <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
+                    </Link>
+                    <Avatar {...stringAvatar(capitalizeFirstLetter(avatar))} sx={{ marginLeft: '1200px', bgcolor: stringToColor(avatar) }} />
                     <Link to="/profile">
-                        <Button sx={{ marginLeft: '250px' }} onClick={handleProfile} variant="contained" disableElevation={true}>Profile</Button>
+                        <Button onClick={handleProfile} variant="contained" disableElevation={true}>Profile</Button>
                     </Link>
                     <Link to="/login">
-                        <Button sx={{ marginLeft: '670px' }} onClick={handleLogout} variant="contained" disableElevation={true}>Logout</Button>
+                        <Button onClick={handleLogout} variant="contained" disableElevation={true}>Logout</Button>
                     </Link>
                 </Toolbar>
             </AppBar>
@@ -104,23 +137,53 @@ const ProfilePage: React.FC = () => {
                     <h2 style={{ textAlign: 'center' }}>Profile Details</h2>
                     <form onSubmit={handleProfileDeletion}>
                         <div style={{ marginBottom: '8px' }}>
-                            <Typography variant="h5" gutterBottom>
+                            <Typography variant="h6" gutterBottom>
                                 Username: {_username}
                             </Typography>
                         </div>
-                        <div style={{ marginBottom: '16px' }}>
-                            <Typography variant="h5" gutterBottom>
-                                Password: {_password}
+                        <div style={{ marginBottom: '8px' }}>
+                            <Typography variant="h6" gutterBottom>
+                                Name: {_name}
+                            </Typography>
+                        </div>
+                        <div style={{ marginBottom: '8px' }}>
+                            <Typography variant="h6" gutterBottom>
+                                Surname: {_surname}
                             </Typography>
                         </div>
                         <div style={{ marginBottom: '16px' }}>
-                            <Button variant="contained" type="submit" color="error">
+                            <Typography variant="h6" gutterBottom>
+                                Email: {_email}
+                            </Typography>
+                        </div>
+                        <div style={{ marginBottom: '16px' }}>
+                            <Button aria-describedby={id} variant="contained" onClick={handleClick} color="error">
                                 Delete profile
                             </Button>
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                sx={{ textAlign: 'center' }}
+                            >
+                                <Typography sx={{ p: 2 }}>Are you sure that you want to delete your account?</Typography>
+                                <Button variant="contained" type="submit" color="error" sx={{ marginRight: '5px', marginBottom: '5px' }}>
+                                    Yes, Delete profile
+                                </Button>
+
+                                <Button variant="contained" onClick={handleClose} color="primary" sx={{ marginBottom: '5px' }}>
+                                    No, Come back
+                                </Button>
+                            </Popover>
                         </div>
                     </form>
                 </Box>
-
+                <Divider orientation="vertical" flexItem />
                 <Box sx={{ width: '50%', marginLeft: '20px', textAlign: 'center' }}>
                     <h2 style={{ textAlign: 'center' }}>Change Password</h2>
                     <form onSubmit={handleSubmit}>

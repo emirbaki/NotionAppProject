@@ -12,11 +12,11 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', async (req, res) => {
     try{
-        const { username, password } = req.body;
+        const { username, password, email, name, surname } = req.body;
         const newUser = new User({ username, password });
         console.log(username);
         if (!(username == '' || password == '')) {
-            const result = await db.collection('users').insertOne({ username, password });
+            const result = await db.collection('users').insertOne({ username, password, email, name, surname });
             res.status(201).send('User added successfully with id: ${result.insertedId}');
         }
     } catch (err) {

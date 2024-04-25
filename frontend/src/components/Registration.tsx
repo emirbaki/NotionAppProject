@@ -6,13 +6,18 @@ import axios from 'axios'; // Import Axios for making HTTP requests
 const RegistrationPage: React.FC = () => {
     const [_username, setUsername] = useState('');
     const [_password, setPassword] = useState('');
+    const [_email, setEmail] = useState('');
+    const [_name, setName] = useState('');
+    const [_surname, setSurname] = useState('');
 
+
+    
     const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
             // Send the form data to the backend server
-            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password : _password });
+            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password : _password, email: _email, name: _name, surname: _surname });
             console.log(response);
 
             // Clear the form fields after successful registration
@@ -31,7 +36,7 @@ const RegistrationPage: React.FC = () => {
 
         try {
             // Send the form data to the backend server
-            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password : _password });
+            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password: _password, email: _email, name: _name, surname: _surname });
             console.log(_username);
             if(response.status === 201){
                 window.location.href = "http://localhost:3001/login";
@@ -72,10 +77,40 @@ const RegistrationPage: React.FC = () => {
                                 required
                             />
                         </div>
+                        <div style={{ marginBottom: '8px' }}>
+                            <TextField
+                                variant="outlined"
+                                type="email"
+                                label="Email"
+                                value={_email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div style={{ marginBottom: '8px' }}>
+                            <TextField
+                                variant="outlined"
+                                type="text"
+                                label="Name"
+                                value={_name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div style={{ marginBottom: '8px' }}>
+                            <TextField
+                                variant="outlined"
+                                type="text"
+                                label="Surname"
+                                value={_surname}
+                                onChange={(e) => setSurname(e.target.value)}
+                                required
+                            />
+                        </div>
                         <div style={{ marginBottom: '16px' }}>
                             <TextField
                                 variant="outlined"
-                                type="password"
+                                type="showPassword"
                                 label="Password"
                                 value={_password}
                                 onChange={(e) => setPassword(e.target.value)}

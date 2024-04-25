@@ -18,5 +18,8 @@ interface NoteContentProps {
 interface User {
     username: string;
     password: string;
+    email: string;
+    name: string;
+    surname: string;
 }
 export type {Note, NoteProps, NoteContentProps, User}
