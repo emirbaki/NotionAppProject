@@ -6,12 +6,20 @@ import Sidebar from './components/Sidebar';
 import axios from 'axios';
 import {Note} from './utils/Interfaces';
 import { Link } from 'react-router-dom';
-import { User } from './utils/Interfaces';
+
 
 
 const MainPage: React.FC = () => {
     const [notes, setNotes] = useState<Note[]>([]);
     const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+
+    const _username = sessionStorage.getItem("username");
+    const _password = sessionStorage.getItem("password");
+
+    if (_username == null || _password == null){
+        window.location.href = "http://localhost:3001/login";
+
+    }
 
     useEffect(() => {
         readNotes();
@@ -62,6 +70,11 @@ const MainPage: React.FC = () => {
 
     };
 
+    const handleLogout = async () => {
+        sessionStorage.clear();
+
+    };
+
     return (
         <div>
             <AppBar position="static">
@@ -71,6 +84,9 @@ const MainPage: React.FC = () => {
                     </Typography>
                     <Link to="/profile">
                         <Button sx={{ marginLeft: '250px' }} onClick={handleProfile} variant="contained" disableElevation={true}>Profile</Button>
+                    </Link>
+                    <Link to="/login">
+                        <Button sx={{ marginLeft: '670px' }} onClick={handleLogout} variant="contained" disableElevation={true}>Logout</Button>
                     </Link>
                 </Toolbar>
             </AppBar>
