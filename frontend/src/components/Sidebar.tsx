@@ -16,6 +16,8 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteClick, onCreate }) => {
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState(' ');
 
+
+
   const insertNote = async () => {
     if (!newTitle || !newContent) return;
 
@@ -25,6 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteClick, onCreate }) => {
         content: newContent,
       });
       console.log('Note created successfully:', response.data);
+      
       onCreate!(response.data.title, response.data.content); // Pass ID to parent component
       setNewTitle('');
       setNewContent('');
