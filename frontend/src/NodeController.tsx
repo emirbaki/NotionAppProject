@@ -1,7 +1,7 @@
 import './App.css';
 import NoteObject from './components/Note';
 import { useState, useEffect } from 'react';
-import { AppBar, Box, Grid, Toolbar, Typography, Button, Avatar , Stack} from '@mui/material';
+import { AppBar, Box, Grid, Toolbar, Typography, Button, Avatar} from '@mui/material';
 import Sidebar from './components/Sidebar';
 import axios from 'axios';
 import {Note} from './utils/Interfaces';
@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter, stringAvatar, stringToColor , avatar} from './utils/Util.js';
 import { User } from './utils/Interfaces';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
-import mongoose from 'mongoose';
 
 
 
@@ -73,7 +72,7 @@ const MainPage: React.FC = () => {
         }
     };
 
-    const handleNoteClick = (id: number) => {
+    const handleNoteClick = (id: string) => {
         console.log("clickten gelen id", id);
         const note = notes.find((note) => note.id === id);
         if(note !== null) console.log("yalvarırım: " + note!.id);

@@ -3,7 +3,6 @@ import { List, ListItemText, ListItemIcon, ListItemButton, Button, TextField } f
 import { AddCircleOutlineRounded, FolderOpenOutlined } from '@mui/icons-material';
 import axios from 'axios';
 import {Note} from '../utils/Interfaces';
-import mongoose from 'mongoose';
 
 interface SidebarProps {
   notes: Note[];
