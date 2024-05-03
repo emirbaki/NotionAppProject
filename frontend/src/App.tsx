@@ -8,6 +8,9 @@ import ProfilePage from './components/Profile';
 import { User } from './utils/Interfaces';
 
 
+import CollectionView from './components/Collections';
+
+
 function App() {
   return (
     <Routes>
@@ -17,6 +20,8 @@ function App() {
       <Route path='/login' element={<LoginPage />}></Route>
       <Route path='/registration' element={<RegistrationPage />}></Route>
       <Route path='/profile' element={<ProfilePage />}></Route>
+
+      <Route path='/collections' element={<CollectionView />}></Route>
 
 
 
