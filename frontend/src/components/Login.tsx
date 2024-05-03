@@ -1,42 +1,42 @@
 import React, { useState, FormEvent } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
+import { TextField, Button, Grid, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for making HTTP requests
 
+
+
 const LoginPage: React.FC = () => {
+    
     const [_username, setUsername] = useState('');
     const [_password, setPassword] = useState('');
+    const [alert, setAlert] = useState<{ open: boolean, message: string, severity: 'error' | 'success' }>({ open: false, message: '', severity: 'error' });
 
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Here you can add your authentication logic
-        // For example, you can send a request to your backend server to verify the credentials
 
-        // For demonstration, let's just log the username and password
         try {
-            
-           
-            // Send the form data to the backend server
-            const response = await axios.post('http://localhost:3000/api/login', { username: _username, password : _password });
-            if(response.status === 200){
-                const token = response.data.token;
-                localStorage.setItem("token", token);
-                window.location.href = "http://localhost:3001/"
+            const response = await axios.post('http://localhost:3000/api/login', { username: _username, password: _password });
+            console.log(response);
+
+            if (response.status === 200) {
+                sessionStorage.setItem("username", _username);
+                sessionStorage.setItem("password", _password);
+                window.location.href = "http://localhost:3001/";
+            } else {
+                setAlert({ open: true, message: 'Login failed. Please check your credentials.', severity: 'error' });
             }
-            // Clear the form fields after successful registration
+
+            // Clear the form fields after handling the response
             setUsername('');
             setPassword('');
-            
-            
 
-            // Optionally, you can redirect the user to another page
-            // history.push('/dashboard');
         } catch (error) {
-            console.error('Error registering user:', error);
+            console.error('Error logging in:', error);
         }
+    };
 
-        // After successful authentication, you can redirect the user to another page
-        // For example, you can use React Router: history.push('/dashboard');
+    const handleCloseAlert = () => {
+        setAlert({ ...alert, open: false });
     };
 
     return (
@@ -78,17 +78,21 @@ const LoginPage: React.FC = () => {
                         <div>
                             Are you not registered?
                             <div style={{ marginTop: '8px' }}>
-                            <Link to="/registration">
-                                <Button variant="contained">Sign Up</Button>
-                            </Link></div> 
+                                <Link to="/registration">
+                                    <Button variant="contained">Sign Up</Button>
+                                </Link>
+                            </div>
                         </div>
-                        
                     </form>
                 </div>
             </Grid>
+            {alert.open && (
+                <Alert severity={alert.severity} onClose={handleCloseAlert}>
+                    {alert.message}
+                </Alert>
+            )}
         </Grid>
     );
-
 };
 
 export default LoginPage;
