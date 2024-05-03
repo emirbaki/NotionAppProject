@@ -8,8 +8,13 @@ import cookieParser from "cookie-parser";
 import errorHandler  from './middlewares/errorMiddleware.js';
 
 import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/userRoutes.js";
-import notesRouter from "./routes/noteRoutes.js";
+
+import usersRouter from "./routes/users.js";
+
+import notes from "./routes/notes.js";
+import registration from "./routes/registration.js";
+import profile from "./routes/profile.js";
+
 import connectDB from "./db/connection.js";
 import collectionRoutes from './routes/collectionRoutes.js';
 
@@ -37,8 +42,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
 
 app.use('/', indexRouter);
-app.use('/api', usersRouter);
-app.use('/notes', notesRouter);
+app.use('/users', usersRouter);
+app.use('/notes', notes);
+app.use('/api', registration);
+app.use('/profile', profile);
 app.use('/collections', collectionRoutes);
 
 
