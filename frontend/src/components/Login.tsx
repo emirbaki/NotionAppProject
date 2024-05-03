@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for making HTTP requests
 
 
+
 const LoginPage: React.FC = () => {
+    
     const [_username, setUsername] = useState('');
     const [_password, setPassword] = useState('');
     const [alert, setAlert] = useState<{ open: boolean, message: string, severity: 'error' | 'success' }>({ open: false, message: '', severity: 'error' });
@@ -17,6 +19,8 @@ const LoginPage: React.FC = () => {
             console.log(response);
 
             if (response.status === 200) {
+                sessionStorage.setItem("username", _username);
+                sessionStorage.setItem("password", _password);
                 window.location.href = "http://localhost:3001/";
             } else {
                 setAlert({ open: true, message: 'Login failed. Please check your credentials.', severity: 'error' });
