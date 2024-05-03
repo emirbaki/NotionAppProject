@@ -9,9 +9,9 @@ import errorHandler  from './middlewares/errorMiddleware.js';
 
 import indexRouter from "./routes/index.js";
 
-import usersRouter from "./routes/users.js";
+import usersRouter from "./routes/userRoutes.js";
 
-import notes from "./routes/notes.js";
+import notes from "./routes/noteRoutes.js";
 import registration from "./routes/registration.js";
 import profile from "./routes/profile.js";
 

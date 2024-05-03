@@ -17,7 +17,7 @@ const RegistrationPage: React.FC = () => {
 
         try {
             // Send the form data to the backend server
-            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password : _password, email: _email, name: _name, surname: _surname });
+            const response = await axios.post('http://localhost:3000/users/register', { username: _username, password : _password, email: _email, name: _name, surname: _surname });
             console.log(response);
 
             // Clear the form fields after successful registration
@@ -36,7 +36,7 @@ const RegistrationPage: React.FC = () => {
 
         try {
             // Send the form data to the backend server
-            const response = await axios.post('http://localhost:3000/api/register', { username: _username, password: _password, email: _email, name: _name, surname: _surname });
+            const response = await axios.post('http://localhost:3000/users/register', { username: _username, password: _password, email: _email, name: _name, surname: _surname });
             console.log(_username);
             if(response.status === 201){
                 window.location.href = "http://localhost:3001/login";

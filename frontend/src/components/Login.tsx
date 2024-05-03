@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/api/login', { username: _username, password: _password });
+            const response = await axios.post('http://localhost:3000/users/login', { username: _username, password: _password });
             console.log(response);
 
             if (response.status === 200) {
