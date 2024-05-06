@@ -1,4 +1,4 @@
-import moongose, { ObjectId } from "mongoose";
+
 interface Note {
     id: string;
     title: string;
@@ -23,4 +23,24 @@ interface User {
     name: string;
     surname: string;
 }
-export type {Note, NoteProps, NoteContentProps, User}
+interface Notification {
+    _id: string;
+    user: string;
+    type: string;
+    content?: string;
+    read: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  
+interface Note_ {
+    _id: string; // Assuming _id is a string
+    // Other properties of Note
+}
+  interface Collection {
+    _id: string; // Assuming your collection has an _id property
+    title: string;
+    noteCollection: Note_[];
+    // ... other collection properties
+}
+export type {Note, NoteProps, NoteContentProps, User, Notification,Note_,  Collection}

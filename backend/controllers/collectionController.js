@@ -12,6 +12,23 @@ const getCollections = asyncHandler(async (req, res) => {
   res.status(200).send(collections);
 });
 
+const getCollection = asyncHandler(async (req, res) => {
+  try {
+    const collection = await NoteCollection.findById(req.params.id);
+    await collection.populate('noteCollection');
+    if (collection) {
+      console.log('Fetched collection:', collection);
+      res.status(200).send(collection);
+    } else {
+      console.log('Collection not found!');
+      res.status(404).send({ message: 'Collection not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching collection:', error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
 // @desc    Create Collection
 // @route   POST /api/collections
 // @access  Private
@@ -90,6 +107,7 @@ const deleteCollection = asyncHandler(async (req, res) => {
 
 export {
   getCollections,
+  getCollection,
   createCollection,
   updateCollection,
   deleteCollection,

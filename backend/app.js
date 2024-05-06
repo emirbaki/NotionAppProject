@@ -10,7 +10,7 @@ import errorHandler  from './middlewares/errorMiddleware.js';
 import indexRouter from "./routes/index.js";
 
 import usersRouter from "./routes/userRoutes.js";
-
+import notifications from "./routes/notificationRoutes.js";
 import notes from "./routes/noteRoutes.js";
 import registration from "./routes/registration.js";
 import profile from "./routes/profile.js";
@@ -45,6 +45,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/notes', notes);
 app.use('/api', registration);
+app.use('/api/notifications', notifications);
 app.use('/profile', profile);
 app.use('/collections', collectionRoutes);
 

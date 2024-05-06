@@ -13,6 +13,12 @@ const getNotes = asyncHandler(async (req, res) => {
   res.status(200).send(notes);
 });
 
+const getNote = asyncHandler(async (req, res) => {
+  const note = await Note.findById(req.params.id);
+
+  res.status(200).send(note);
+})
+
 // @desc    Create Note
 // @route   POST /api/notes
 // @access  Private
@@ -66,7 +72,7 @@ const updateNote = asyncHandler(async (req, res) => {
 // @route   DELETE /api/notes/:id
 // @access  Private
 const deleteNote = asyncHandler(async (req, res) => {
-    console.log("ne bu " + req.params.id)
+  console.log("ne bu " + req.params.id)
   const note = await Note.findById(req.params.id);
 
   if (!note) {
@@ -91,7 +97,10 @@ const deleteNote = asyncHandler(async (req, res) => {
   res.status(200).send({ id: req.params.id });
 });
 
-export {  getNotes,
-    createNote,
-    updateNote,
-    deleteNote,};
+export {
+  getNotes,
+  getNote,
+  createNote,
+  updateNote,
+  deleteNote,
+};
