@@ -11,13 +11,17 @@ const getCollections = asyncHandler(async (req, res) => {
 
   res.status(200).send(collections);
 });
+const getCollectionsByUser = asyncHandler(async(req, res) => {
+  const collections = await NoteCollection.find({user: req.query.userId});
 
+  res.status(200).send(collections);
+}) 
 const getCollection = asyncHandler(async (req, res) => {
   try {
     const collection = await NoteCollection.findById(req.params.id);
     await collection.populate('noteCollection');
     if (collection) {
-      console.log('Fetched collection:', collection);
+      // console.log('Fetched collection:', collection);
       res.status(200).send(collection);
     } else {
       console.log('Collection not found!');
@@ -28,6 +32,78 @@ const getCollection = asyncHandler(async (req, res) => {
     res.status(500).send({ message: 'Internal Server Error' });
   }
 });
+
+const InsertNoteIntoCollection = asyncHandler(async (req, res)=> {
+  try {
+    const collectionId = req.params.id;
+    const noteId = req.body.noteId;
+
+    const collection = await NoteCollection.findById(collectionId);
+
+    if (!collection) {
+      res.status(404);
+      throw new Error('Collection not found');
+    }
+  
+    // Check for user
+    if (!req.user) {
+      res.status(401);
+      throw new Error('User not found');
+    }
+  
+    // Make sure the logged in user matches collection's user
+    if (collection.user.toString() !== req.user.id) {
+      res.status(401);
+      throw new Error('User not authorized');
+    }
+    // Update the noteCollection array in the NoteCollection model
+    // Update the noteCollection array in the collection document
+    collection.noteCollection.push(noteId);
+    await collection.save();
+
+    res.status(200).send(collection)
+} catch (error) {
+    console.error('Error adding note to collection:', error);
+    res.status(500).json({ message: 'Server Error' });
+}
+} );
+
+
+const DeleteNoteFromCollection = asyncHandler(async (req, res)=> {
+  try {
+    const collectionId = req.params.id;
+    const noteId = req.params.noteid;
+     
+
+    const collection = await NoteCollection.findById(collectionId);
+
+    if (!collection) {
+      res.status(404);
+      throw new Error('Collection not found');
+    }
+  
+    // Check for user
+    if (!req.user) {
+      res.status(401);
+      throw new Error('User not found');
+    }
+  
+    // Make sure the logged in user matches collection's user
+    if (collection.user.toString() !== req.user.id) {
+      res.status(401);
+      throw new Error('User not authorized');
+    }
+    // Update the noteCollection array in the NoteCollection model
+    // Update the noteCollection array in the collection document
+    collection.noteCollection.pull(noteId);
+    await collection.save();
+
+    res.status(200).send(collection)
+} catch (error) {
+    console.error('Error deleting note from collection:', error);
+    res.status(500).json({ message: 'Server Error' });
+}
+} );
 
 // @desc    Create Collection
 // @route   POST /api/collections
@@ -81,7 +157,8 @@ const updateCollection = asyncHandler(async (req, res) => {
 // @route   DELETE /api/collections/:id
 // @access  Private
 const deleteCollection = asyncHandler(async (req, res) => {
-  const collection = await NoteCollection.findById(req.params.id);
+  const collectionId = req.params.id;
+  const collection = await NoteCollection.findById(collectionId);
 
   if (!collection) {
     res.status(404);
@@ -100,13 +177,16 @@ const deleteCollection = asyncHandler(async (req, res) => {
     throw new Error('User not authorized');
   }
 
-  await collection.remove();
-
+  // await collection.remove();
+  await NoteCollection.deleteOne({ _id: collectionId });
   res.status(200).send({ id: req.params.id });
 });
 
 export {
   getCollections,
+  InsertNoteIntoCollection,
+  DeleteNoteFromCollection,
+  getCollectionsByUser,
   getCollection,
   createCollection,
   updateCollection,

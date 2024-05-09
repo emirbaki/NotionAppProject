@@ -1,11 +1,10 @@
 import React from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom'
-import MainPage from './NodeController';
+import MainPage from './MainPage';
 import LoginPage from './components/Login'
 import RegistrationPage from './components/Registration'
 import ProfilePage from './components/Profile';
-import { User } from './utils/Interfaces';
 
 
 import CollectionView from './components/Collections';

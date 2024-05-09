@@ -13,7 +13,8 @@ const LoginPage: React.FC = () => {
 
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        const token = localStorage.getItem('token');
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
             const response = await axios.post('http://localhost:3000/users/login', { username: _username, password: _password });
             console.log(response);
@@ -21,6 +22,8 @@ const LoginPage: React.FC = () => {
             if (response.status === 200) {
                 sessionStorage.setItem("username", _username);
                 sessionStorage.setItem("password", _password);
+                localStorage.setItem("token", response.data.token);
+    
                 window.location.href = "http://localhost:3001/";
             } else {
                 setAlert({ open: true, message: 'Login failed. Please check your credentials.', severity: 'error' });
