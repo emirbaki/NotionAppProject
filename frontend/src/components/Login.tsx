@@ -14,7 +14,8 @@ const LoginPage: React.FC = () => {
 
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        const token = localStorage.getItem('token');
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
             const response = await axios.post('http://localhost:3000/users/login', { username: _username, password: _password });
             console.log(response);
@@ -28,7 +29,9 @@ const LoginPage: React.FC = () => {
                         sessionStorage.setItem("email", user.data.email);
                         sessionStorage.setItem("name", user.data.name);
                         sessionStorage.setItem("surname", user.data.surname);
-                        window.location.href = "http://localhost:3001/";
+                        localStorage.setItem("token", response.data.token);
+    
+                window.location.href = "http://localhost:3001/";
                     });
                 } catch (error) {
                     console.error('Error fetching notes:', error);

@@ -92,8 +92,9 @@ const deleteNote = asyncHandler(async (req, res) => {
     throw new Error('User Not Authorized');
   }
 
-  await note.remove();
-
+  // await note.remove();
+  await Note.deleteOne({ _id: req.params.id });
+  // res.status(200).send({ id: req.params.id });
   res.status(200).send({ id: req.params.id });
 });
 

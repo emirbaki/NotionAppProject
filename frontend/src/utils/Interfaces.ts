@@ -1,22 +1,23 @@
 
 interface Note {
-    id: string;
+    _id: string;
     title: string;
     content: string;
 }
 interface NoteProps {
-    id: string;
+    _id: string;
     title: string;
-    content?: string; // Optional content
-    onUpdate: (content: string) => void;
-    onDeleteNote: (id: string) => void; // Function to handle note deletion (pass note ID)
+    content: string; // Optional content
+    onUpdate: (title: string, content: string) => void;
     onShare: () => void; // Function to handle note sharing logic
+    onDelete : (id: string) => void;
 }
 interface NoteContentProps {
-    content?: string; // Optional content
+    content: string; // Optional content
     onUpdate: (content: string) => void;
 }
 interface User {
+    _id: string;
     username: string;
     password: string;
     email: string;
@@ -44,7 +45,7 @@ interface Note_ {
     _id: string; // Assuming _id is a string
     // Other properties of Note
 }
-  interface Collection {
+interface Collection {
     _id: string; // Assuming your collection has an _id property
     title: string;
     noteCollection: Note_[];
