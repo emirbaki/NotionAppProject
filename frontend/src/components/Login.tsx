@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { TextField, Button, Grid, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for making HTTP requests
+import { User } from '../utils/Interfaces';
 
 
 
@@ -21,7 +22,18 @@ const LoginPage: React.FC = () => {
             if (response.status === 200) {
                 sessionStorage.setItem("username", _username);
                 sessionStorage.setItem("password", _password);
-                window.location.href = "http://localhost:3001/";
+                try {
+                    const response_2 = axios.get<User>(`http://localhost:3000/profile/${_username}`);
+                    response_2.then((user) => {
+                        sessionStorage.setItem("email", user.data.email);
+                        sessionStorage.setItem("name", user.data.name);
+                        sessionStorage.setItem("surname", user.data.surname);
+                        window.location.href = "http://localhost:3001/";
+                    });
+                } catch (error) {
+                    console.error('Error fetching notes:', error);
+                }
+                
             } else {
                 setAlert({ open: true, message: 'Login failed. Please check your credentials.', severity: 'error' });
             }
@@ -38,6 +50,7 @@ const LoginPage: React.FC = () => {
     const handleCloseAlert = () => {
         setAlert({ ...alert, open: false });
     };
+    
 
     return (
         <Grid

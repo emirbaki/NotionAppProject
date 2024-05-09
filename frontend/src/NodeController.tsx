@@ -6,13 +6,13 @@ import Sidebar from './components/Sidebar';
 import axios from 'axios';
 import { Note, Notification as NotificationType } from './utils/Interfaces';
 import { Link } from 'react-router-dom';
-import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar } from './utils/Util.js';
-import { User, Collection } from './utils/Interfaces';
-import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
+import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar, handleLogout, HomeIcon } from './utils/Util.js';
+import { Collection } from './utils/Interfaces';
 
 import NotificationMenu from './components/Notification';
 import CollectionObject from './components/CollectionView';
 import EditableNote from './components/EditableNote';
+
 
 
 
@@ -25,7 +25,6 @@ const MainPage: React.FC = () => {
     const _username = sessionStorage.getItem("username");
     const _password = sessionStorage.getItem("password");
 
-
     if (_username == null || _password == null) {
         window.location.href = "http://localhost:3001/login";
 
@@ -34,7 +33,6 @@ const MainPage: React.FC = () => {
 
     useEffect(() => {
         readNotes();
-        readProfile();
         readCollections();
     }, []);
 
@@ -65,19 +63,6 @@ const MainPage: React.FC = () => {
     };
 
 
-    const readProfile = async () => {
-        try {
-            const response = axios.get<User>(`http://localhost:3000/profile/${_username}`);
-            response.then((user) => {
-                sessionStorage.setItem("email", user.data.email);
-                sessionStorage.setItem("name", user.data.name);
-                sessionStorage.setItem("surname", user.data.surname);
-            });
-        } catch (error) {
-            console.error('Error fetching notes:', error);
-        }
-    };
-
     const handleNoteClick = (id: string) => {
         console.log("clickten gelen id", id);
         const note = notes.find((note) => note.id === id);
@@ -105,24 +90,8 @@ const MainPage: React.FC = () => {
     };
 
 
-    const handleProfile = async () => {
-        console.log('Profile');
 
-    };
-
-    const handleLogout = async () => {
-        sessionStorage.clear();
-
-    };
-
-
-    function HomeIcon(props: SvgIconProps) {
-        return (
-            <SvgIcon {...props}>
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </SvgIcon>
-        );
-    }
+    
     const notification: NotificationType = {
         _id: '1',
         user: 'user123',
@@ -158,9 +127,12 @@ const MainPage: React.FC = () => {
                     <Link to="/">
                         <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
                     </Link>
-                    <Avatar {...stringAvatar(capitalizeFirstLetter(avatar))} sx={{ marginLeft: '1200px', bgcolor: stringToColor(avatar) }} />
+                    <Avatar {...stringAvatar(capitalizeFirstLetter(avatar))} sx={{ marginLeft: '1100px', bgcolor: stringToColor(avatar) }} />
                     <Link to="/profile">
-                        <Button onClick={handleProfile} variant="contained" disableElevation={true}>Profile</Button>
+                        <Button variant="contained" disableElevation={true}>Profile</Button>
+                    </Link>
+                    <Link to="/friend">
+                        <Button variant="contained" disableElevation={true}>Friends</Button>
                     </Link>
                     <Link to="/login">
                         <Button onClick={handleLogout} variant="contained" disableElevation={true}>Logout</Button>

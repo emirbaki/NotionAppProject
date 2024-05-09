@@ -13,10 +13,11 @@ import usersRouter from "./routes/userRoutes.js";
 import notifications from "./routes/notificationRoutes.js";
 import notes from "./routes/noteRoutes.js";
 import registration from "./routes/registration.js";
-import profile from "./routes/profile.js";
-
 import connectDB from "./db/connection.js";
 import collectionRoutes from './routes/collectionRoutes.js';
+import friendship from "./routes/friendship.js";
+import profile from "./routes/profile.js";
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -47,7 +48,8 @@ app.use('/notes', notes);
 app.use('/api', registration);
 app.use('/api/notifications', notifications);
 app.use('/profile', profile);
-app.use('/collections', collectionRoutes);
+app.use('/collections', collectionRoutes); 
+app.use('/friendship', friendship);
 
 
 

@@ -9,6 +9,8 @@ import { User } from './utils/Interfaces';
 
 
 import CollectionView from './components/Collections';
+import Friendsgip from './components/Friendship';
+import Friendship from './components/Friendship';
 
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
       <Route path='/login' element={<LoginPage />}></Route>
       <Route path='/registration' element={<RegistrationPage />}></Route>
       <Route path='/profile' element={<ProfilePage />}></Route>
+      <Route path='/friend' element={<Friendship />}></Route>
 
       <Route path='/collections' element={<CollectionView />}></Route>
 
