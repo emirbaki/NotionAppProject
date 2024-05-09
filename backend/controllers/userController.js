@@ -8,7 +8,7 @@ import { User } from "../models/userModel.js";
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email, name, surname} = req.body;
 
   if (!username || !password) {
     res.status(400);
@@ -28,14 +28,17 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //   create user
   const user = await User.create({
-    name: username,
+    username: username,
     password: hashedPassword,
+    email: email,
+    name: name,
+    surname: surname
   });
 
   if (user) {
     res.status(201).json({
       _id: user.id,
-      name: user.name,
+      name: user.username,
       token: generateToken(user._id),
     });
   } else {
@@ -51,11 +54,11 @@ const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   //  Check for user email
-  const user = await User.findOne({ name: username });
+  const user = await User.findOne({ username: username });
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
       _id: user.id,
-      name: user.name,
+      username: user.username,
       token: generateToken(user._id),
     });
   } else {
