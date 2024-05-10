@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
                         sessionStorage.setItem("userId", user.data._id);
                         sessionStorage.setItem("name", user.data.name);
                         sessionStorage.setItem("surname", user.data.surname);
-                        sessionStorage.setItem("admin", user.data.admin.toString());
+                        sessionStorage.setItem("admin", user.data.admin!.toString());
                         localStorage.setItem("token", response.data.token);
     
            
