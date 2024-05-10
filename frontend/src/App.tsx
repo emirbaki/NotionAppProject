@@ -8,6 +8,8 @@ import ProfilePage from './components/Profile';
 
 
 import CollectionView from './components/Collections';
+import ControlPanel from './components/ControlPanel';
+import Friendship from './components/Friendship';
 
 
 function App() {
@@ -19,7 +21,8 @@ function App() {
       <Route path='/login' element={<LoginPage />}></Route>
       <Route path='/registration' element={<RegistrationPage />}></Route>
       <Route path='/profile' element={<ProfilePage />}></Route>
-
+      <Route path='/friend' element={<Friendship />}></Route>
+      <Route path='/controlpanel' element={<ControlPanel />}></Route>
       <Route path='/collections' element={<CollectionView />}></Route>
 
 

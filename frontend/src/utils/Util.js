@@ -1,3 +1,5 @@
+import HomeIcon from '@mui/icons-material/Home';
+
 function stringToColor(string) {
     let hash = 0;
     let i;
@@ -34,6 +36,13 @@ const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+const handleLogout = async () => {
+    sessionStorage.clear();
+
+};
+
+
+
 const avatar = (capitalizeFirstLetter(sessionStorage.getItem("name")) + ' ' + capitalizeFirstLetter(sessionStorage.getItem("surname"))) ?? '';
 
-export { capitalizeFirstLetter, stringAvatar, stringToColor , avatar};
+export { capitalizeFirstLetter, stringAvatar, stringToColor, avatar, handleLogout, HomeIcon };

@@ -23,6 +23,7 @@ interface User {
     email: string;
     name: string;
     surname: string;
+    admin: boolean;
 }
 interface Notification {
     _id: string;
@@ -32,6 +33,13 @@ interface Notification {
     read: boolean;
     createdAt: Date;
     updatedAt: Date;
+  }
+  
+interface _Friendship{
+    _id: string;
+    username_1: string;
+    username_2: string;
+    friends: _Friendship[];
 }
 
 interface Note_ {
@@ -44,4 +52,4 @@ interface Collection {
     noteCollection: Note_[];
     // ... other collection properties
 }
-export type { Note, NoteProps, NoteContentProps, User, Notification, Note_, Collection }
+export type { Note, NoteProps, NoteContentProps, User, Notification, Note_, Collection, _Friendship }

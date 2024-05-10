@@ -1,11 +1,12 @@
 import React, { useState, FormEvent, useEffect } from 'react';
-import { TextField, Button, Grid, Alert, AppBar, Toolbar, Box, Avatar, Divider, Popover } from '@mui/material';
+import { TextField, Button,AppBar, Toolbar, Box, Avatar, Divider, Popover } from '@mui/material';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for making HTTP requests
 import Typography from '@mui/material/Typography';
 import { User } from '../utils/Interfaces';
-import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar } from '../utils/Util.js';
-import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
+import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar, handleLogout, HomeIcon } from '../utils/Util.js';
+import NotificationMenu from './Notification';
+
 
 const ProfilePage: React.FC = () => {
     const [username, setUsername] = useState<String>();
@@ -21,6 +22,8 @@ const ProfilePage: React.FC = () => {
 
     const _username = sessionStorage.getItem("username");
     const _password = sessionStorage.getItem("password");
+    const _admin = sessionStorage.getItem("admin");
+
 
     if (_username == null || _password == null) {
         window.location.href = "http://localhost:3001/login";
@@ -61,16 +64,6 @@ const ProfilePage: React.FC = () => {
         }
     };
 
-    const handleProfile = async () => {
-        console.log('Profile');
-
-    };
-
-    const handleLogout = async () => {
-        sessionStorage.clear();
-
-    };
-
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (password == repeatPassword || password === '') {
@@ -87,13 +80,6 @@ const ProfilePage: React.FC = () => {
         }
     };
 
-    function HomeIcon(props: SvgIconProps) {
-        return (
-            <SvgIcon {...props}>
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </SvgIcon>
-        );
-    }
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -113,12 +99,25 @@ const ProfilePage: React.FC = () => {
                     <Typography variant="h6" color="inherit">
                         My Notes
                     </Typography>
+                    <NotificationMenu userId={''}></NotificationMenu>
                     <Link to="/">
                         <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
                     </Link>
-                    <Avatar {...stringAvatar(capitalizeFirstLetter(avatar))} sx={{ marginLeft: '1200px', bgcolor: stringToColor(avatar) }} />
+                    {_admin === "true" ? (
+                        <Link to="/controlpanel">
+                            <Button variant="contained" disableElevation={true}>Control Panel</Button>
+                        </Link>
+                    ) : (
+                        <div>
+
+                        </div>
+                    )}
+                    <Avatar {...stringAvatar(capitalizeFirstLetter(avatar))} sx={{ marginLeft: '1100px', bgcolor: stringToColor(avatar) }} />
                     <Link to="/profile">
-                        <Button onClick={handleProfile} variant="contained" disableElevation={true}>Profile</Button>
+                        <Button variant="contained" disableElevation={true}>Profile</Button>
+                    </Link>
+                    <Link to="/friend">
+                        <Button variant="contained" disableElevation={true}>Friends</Button>
                     </Link>
                     <Link to="/login">
                         <Button onClick={handleLogout} variant="contained" disableElevation={true}>Logout</Button>
