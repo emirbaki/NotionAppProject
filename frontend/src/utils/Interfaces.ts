@@ -23,6 +23,7 @@ interface User {
     email: string;
     name: string;
     surname: string;
+    admin: boolean;
 }
 interface Notification {
     _id: string;

@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema(
         email: {type: String, require: true},
         name: {type: String, require: true},
         surname: {type: String, require: true},
+        admin: { type: Boolean, require: true, default: false },
+
     },
     {collection: 'users'
 ,timestamps: true}

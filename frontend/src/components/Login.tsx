@@ -29,6 +29,7 @@ const LoginPage: React.FC = () => {
                         sessionStorage.setItem("email", user.data.email);
                         sessionStorage.setItem("name", user.data.name);
                         sessionStorage.setItem("surname", user.data.surname);
+                        sessionStorage.setItem("admin", user.data.admin.toString());
                         localStorage.setItem("token", response.data.token);
     
                 window.location.href = "http://localhost:3001/";
