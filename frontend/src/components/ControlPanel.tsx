@@ -169,7 +169,7 @@ const ControlPanel: React.FC = () => {
                     <Typography variant="h6" color="inherit">
                         My Notes
                     </Typography>
-                    <NotificationMenu userId={''}></NotificationMenu>
+                    <NotificationMenu username={_username}></NotificationMenu>
                     <Link to="/">
                         <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
                     </Link>

@@ -15,8 +15,8 @@ import notes from "./routes/noteRoutes.js";
 import registration from "./routes/registration.js";
 import connectDB from "./db/connection.js";
 import collectionRoutes from './routes/collectionRoutes.js';
-import friendship from "./routes/friendship.js";
-import profile from "./routes/profile.js";
+import friendship from "./routes/friendshipRoutes.js";
+import profile from "./routes/profileRoutes.js";
 
 
 const PORT = process.env.PORT || 3000;

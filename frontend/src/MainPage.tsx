@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { AppBar, Box, Grid, Toolbar, Typography, Button, Avatar } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import axios from 'axios';
-import { Notification as NotificationType } from './utils/Interfaces.js';
 import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar, handleLogout, HomeIcon } from './utils/Util.js';
 import { User, Collection } from './utils/Interfaces.js';
@@ -30,10 +29,12 @@ const MainPage: React.FC = () => {
         // readNotes();
         readProfile();
         readCollections(userId);
-    }, [userId]);
+    }, []);
 
     const readProfile = async () => {
         try {
+            const token = sessionStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const response = axios.get<User>(`http://localhost:3000/profile/${_username}`);
             response.then((user) => {
                 sessionStorage.setItem("email", user.data.email);
@@ -60,26 +61,17 @@ const MainPage: React.FC = () => {
         console.log('Share note');
     };
 
-
-   
-    const notification: NotificationType = {
-        _id: '1',
-        user: 'user123',
-        type: 'friend_request',
-        content: 'You have a new friend request',
-        read: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    }
-
     const [collections, setCollections] = useState<Collection[]>([]);
 
     const readCollections = async (userId: string) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
+            console.log("token: " + token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-            const response = await axios.get<Collection[]>(`http://localhost:3000/collections/?userId=${userId}`, );
+            const response = await axios.get<Collection[]>(`http://localhost:3000/collections/getByUser`,{ params: {
+                userId: userId
+            } });
 
             setCollections(response.data);
         } catch (error) {
@@ -90,7 +82,7 @@ const MainPage: React.FC = () => {
     const deleteCollection = async(id: string) => {
         console.log("Deleting note with ID:", id);
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             await axios.delete(`http://localhost:3000/collections/${id}`);
@@ -106,7 +98,7 @@ const MainPage: React.FC = () => {
                     <Typography variant="h6" color="inherit">
                         My Notes
                     </Typography>
-                    <NotificationMenu userId={''}></NotificationMenu>
+                    <NotificationMenu username={_username}></NotificationMenu>
                     <Link to="/">
                         <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
                     </Link>

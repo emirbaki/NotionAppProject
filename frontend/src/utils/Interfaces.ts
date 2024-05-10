@@ -23,16 +23,19 @@ interface User {
     email: string;
     name: string;
     surname: string;
+    token: string;
     admin: boolean;
 }
 interface Notification {
     _id: string;
     user: string;
+    recipient: string;
     type: string;
     content?: string;
     read: boolean;
     createdAt: Date;
     updatedAt: Date;
+    sharingInstanceId: string;
   }
   
 interface _Friendship{

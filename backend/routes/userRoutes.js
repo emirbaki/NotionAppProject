@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/register', registerUser);
-router.post('/login', protect,loginUser);
+router.post('/login',loginUser);
 
 router.get('/me', protect, getMe);
 
