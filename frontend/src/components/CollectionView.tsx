@@ -263,7 +263,7 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                     <Button onClick={handleSaveNote}>Save</Button>
                 </DialogActions>
             </Dialog>
-            <ShareDialog open={openShareDialog} onClose={handleCloseShareDialog} collectionName={title}/>
+            <ShareDialog open={openShareDialog} onClose={handleCloseShareDialog} collectionName={title} collectionId={id}/>
         </Root>
     );
 };

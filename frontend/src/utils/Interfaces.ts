@@ -35,6 +35,7 @@ interface Notification {
     read: boolean;
     createdAt: Date;
     updatedAt: Date;
+    sharingInstanceId: string;
   }
   
 interface _Friendship{

@@ -7,6 +7,7 @@ const NotificationSchema = new mongoose.Schema(
     type: { type: String, required: true }, // e.g., 'friend_request', 'note_shared'
     content: { type: String }, // Optional: Content of the notification
     read: { type: Boolean, default: false },
+    sharingInstanceId: {type: String, required: true}
   },
   { timestamps: true }
 );

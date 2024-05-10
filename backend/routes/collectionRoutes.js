@@ -9,6 +9,7 @@ import {
   getCollectionsByUser,
   InsertNoteIntoCollection,
   DeleteNoteFromCollection,
+  createBySharingCollection,
 } from '../controllers/collectionController.js';
 
 const router = express.Router();
@@ -17,6 +18,7 @@ const router = express.Router();
 router.use(protect);
 
 router.route('/getByUser').get(getCollectionsByUser);
+router.route('/createBySharing').post(createBySharingCollection);
 router.route('/').get(getCollections).post(createCollection);
 router.route('/:id').delete(deleteCollection).get(getCollection).put(updateCollection);
 router.route('/:id/note').put(InsertNoteIntoCollection);

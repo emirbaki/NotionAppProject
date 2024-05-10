@@ -41,7 +41,6 @@ const MainPage: React.FC = () => {
                 sessionStorage.setItem("name", user.data.name);
                 sessionStorage.setItem("surname", user.data.surname);
                 userId = user.data._id;
-                console.log(userId + "userid bu");
             });
         } catch (error) {
             console.error('Error fetching notes:', error);

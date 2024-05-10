@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Typography, Paper, IconButton, Button } from '@mui/material';
-import { Notification as NotificationModel } from '../utils/Interfaces'; // Assuming you have defined the types for your notification model
+import { Collection, Notification as NotificationModel } from '../utils/Interfaces'; // Assuming you have defined the types for your notification model
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,13 +8,14 @@ import axios from 'axios';
 
 // Define props interface for Notification component
 interface NotificationProps {
+  sharingInstanceId: string;
   notification: NotificationModel;
   onAccept: () => void; // Callback function for accepting the notification
   onDecline: () => void; // Callback function for declining the notification
 }
 
 // Notification component
-const Notification: React.FC<NotificationProps> = ({ notification, onAccept, onDecline }) => {
+const Notification: React.FC<NotificationProps> = ({sharingInstanceId, notification, onAccept, onDecline }) => {
   return (
     <Paper elevation={3}>
       <Typography variant="h6" gutterBottom>
@@ -72,8 +73,16 @@ const NotificationMenu: React.FC<MyComponentProps> = ({ username }) => {
       // Handle errors appropriately, e.g., display an error message
     }
   };
-  const handleAcceptNotification = (notification: NotificationModel) => {
+  const handleAcceptNotification = async(notification: NotificationModel) => {
     // Implement logic to accept the notification
+    if(notification.type === "sharing_request_collection"){
+      const response = await axios.get<Collection>(`http://localhost:3000/collections/${notification.sharingInstanceId}`)
+      const title = response.data.title;
+      await axios.post<Collection>(`http://localhost:3000/collections/createBySharing`, {title: title, noteCollection: response.data.noteCollection})
+    }
+    else if(notification.type === "friendship_request"){
+
+    }
     console.log('Accepted notification:', notification);
     // For example, you might send a request to your backend to process the acceptance
   };
@@ -108,7 +117,7 @@ const NotificationMenu: React.FC<MyComponentProps> = ({ username }) => {
               notification={notification}
               onAccept={() => handleAcceptNotification(notification)}
               onDecline={() => handleDeclineNotification(notification)}
-            />
+              sharingInstanceId={notification.sharingInstanceId}            />
           </MenuItem>
         ))}
         {notifications.length === 0 && (

@@ -7,10 +7,11 @@ import { capitalizeFirstLetter, stringAvatar, stringToColor } from '../utils/Uti
 interface ShareDialogProps {
     open: boolean;
     onClose: () => void;
+    collectionId: string;
     collectionName: string;
 }
 
-const ShareDialog: React.FC<ShareDialogProps> = ({ open, onClose, collectionName }) => {
+const ShareDialog: React.FC<ShareDialogProps> = ({ open, onClose, collectionName, collectionId }) => {
     const [friends, setFriends] = useState<User[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
     const _username = sessionStorage.getItem("username");
@@ -68,8 +69,9 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ open, onClose, collectionName
                 await axios.post('http://localhost:3000/api/notifications/', {
                     user: _username, // Sender ID
                     recipient: selectedUserId, // Recipient ID
-                    type: 'sharing_request', // Notification type
-                    content: `You have a new sharing request for collection ${collectionName}.`, // Notification content
+                    type: 'sharing_request_collection', // Notification type
+                    content: `You have a new sharing request for collection ${collectionName}.`,
+                    sharingInstanceId: collectionId // Notification content
                 });
             });
     

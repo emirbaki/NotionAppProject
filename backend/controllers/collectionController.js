@@ -124,7 +124,21 @@ const createCollection = asyncHandler(async (req, res) => {
 
   res.status(201).send(collection);
 });
+const createBySharingCollection = asyncHandler(async (req, res) => {
+  if (!req.body.title) {
+    res.status(400);
+    throw new Error('Please add a title');
+  }
 
+  const { title, noteCollection } = req.body;
+  const collection = await NoteCollection.create({
+    title,
+    user: req.user.id,
+    noteCollection: noteCollection
+  });
+
+  res.status(201).send(collection);
+});
 // @desc    Update Collection
 // @route   PUT /api/collections/:id
 // @access  Private
@@ -187,6 +201,7 @@ const deleteCollection = asyncHandler(async (req, res) => {
 export {
   getCollections,
   InsertNoteIntoCollection,
+  createBySharingCollection,
   DeleteNoteFromCollection,
   getCollectionsByUser,
   getCollection,
