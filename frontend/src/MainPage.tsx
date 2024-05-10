@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { AppBar, Box, Grid, Toolbar, Typography, Button, Avatar } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import axios from 'axios';
-import { Notification as NotificationType } from './utils/Interfaces.js';
 import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter, stringAvatar, stringToColor, avatar, handleLogout, HomeIcon } from './utils/Util.js';
 import { User, Collection } from './utils/Interfaces.js';
@@ -62,18 +61,6 @@ const MainPage: React.FC = () => {
         // Implement sharing logic here
         console.log('Share note');
     };
-
-
-   
-    const notification: NotificationType = {
-        _id: '1',
-        user: 'user123',
-        type: 'friend_request',
-        content: 'You have a new friend request',
-        read: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    }
 
     const [collections, setCollections] = useState<Collection[]>([]);
 

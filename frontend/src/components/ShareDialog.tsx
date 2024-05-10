@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Checkbox, FormControlLabel, Avatar, dividerClasses } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Checkbox, FormControlLabel, Avatar } from '@mui/material';
 import { _Friendship, User } from '../utils/Interfaces';
 import { capitalizeFirstLetter, stringAvatar, stringToColor } from '../utils/Util';
 
