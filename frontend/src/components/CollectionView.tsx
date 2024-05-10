@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, Menu, MenuItem, TextField } from '@mui/material';
 import { AddCircleOutline, Edit, MoreHorizRounded, Save } from '@mui/icons-material';
@@ -54,10 +54,13 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
     const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
 
     const [openDialog, setOpenDialog] = useState<boolean>(false);
-    const [newNoteTitle, setNewNoteTitle] = useState<string>('');
-    const [newNoteContent, setNewNoteContent] = useState<string>('');
+    // const [newNoteTitle, setNewNoteTitle] = useState<string>('');
+    // const [newNoteContent, setNewNoteContent] = useState<string>('');
     const [openShareDialog, setOpenShareDialog] = useState<boolean>(false);
 
+
+    const newNoteTitleRef = useRef<string>('');
+    const newNoteContentRef = useRef<string>('');
     // Function to open the ShareDialog
     const handleShare = () => {
         setOpenShareDialog(true);
@@ -68,7 +71,16 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
         setOpenShareDialog(false);
     };
 
+    const [isCancelClicked, setIsCancelClicked] = useState(false);
 
+    const handleCloseDialog = () => {
+      if (isCancelClicked) {
+        setOpenDialog(false);
+        newNoteTitleRef.current = '';
+        newNoteContentRef.current = '';
+        setIsCancelClicked(false);
+      }
+    };
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -107,6 +119,8 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
     };
     useEffect(() => {
         readNotes();
+        newNoteTitleRef.current = '';
+        newNoteContentRef.current = '';
     }, []);
    
     
@@ -125,11 +139,6 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
         setOpenDialog(true);
     };
 
-    const handleCloseDialog = () => {
-        setOpenDialog(false);
-        setNewNoteTitle('');
-        setNewNoteContent('');
-    };
 
     const handleSaveNote = async () => {
         try {
@@ -138,8 +147,8 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
 
             // Send a POST request to create a new note
             const response = await axios.post('http://localhost:3000/notes/', {
-                title: newNoteTitle,
-                content: newNoteContent
+                title: newNoteTitleRef.current,
+                content: newNoteContentRef.current
             });
 
             const response2 = await axios.put(`http://localhost:3000/collections/${id}/note`, {noteId: response.data._id })
@@ -187,7 +196,6 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                         />
                         :
                         title
-
                 }
                 action={
                     <div>
@@ -235,7 +243,11 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                 ))}
                 </List>
             </CardContent>
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <Dialog open={openDialog} 
+            onClose={handleCloseDialog}
+            disableEnforceFocus 
+           
+            >
                 <DialogTitle>Add New Note</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -245,8 +257,8 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                         label="Title"
                         type="text"
                         fullWidth
-                        value={newNoteTitle}
-                        onChange={(e) => setNewNoteTitle(e.target.value)}
+                        defaultValue={newNoteTitleRef.current}
+                        onChange={(e) => newNoteTitleRef.current = e.target.value}
                     />
                     <TextField
                         margin="dense"
@@ -254,12 +266,18 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                         label="Content"
                         type="text"
                         fullWidth
-                        value={newNoteContent}
-                        onChange={(e) => setNewNoteContent(e.target.value)}
+                        defaultValue={newNoteContentRef.current}
+                        onChange={(e) => newNoteContentRef.current = e.target.value}
+    
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                    <Button onClick={() => {
+                    setIsCancelClicked(true);
+                    handleCloseDialog()
+                    }
+                        
+                        }>Cancel</Button>
                     <Button onClick={handleSaveNote}>Save</Button>
                 </DialogActions>
             </Dialog>

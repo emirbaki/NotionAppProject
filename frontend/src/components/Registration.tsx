@@ -9,7 +9,7 @@ const RegistrationPage: React.FC = () => {
     const [_email, setEmail] = useState('');
     const [_name, setName] = useState('');
     const [_surname, setSurname] = useState('');
-
+    const [success, setSuccess] = useState<String>();
 
     
     const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
@@ -19,7 +19,12 @@ const RegistrationPage: React.FC = () => {
             // Send the form data to the backend server
             const response = await axios.post('http://localhost:3000/users/register', { username: _username, password : _password, email: _email, name: _name, surname: _surname });
             console.log(response);
-
+            setSuccess("");
+            if(response.status === 200 || response.status === 201){
+                setSuccess("Registartion Complete");
+            }else{
+                setSuccess("There was something wrong with your inputs");
+            }
             // Clear the form fields after successful registration
             setUsername('');
             setPassword('');
@@ -121,6 +126,9 @@ const RegistrationPage: React.FC = () => {
                         <div style={{ marginBottom: '16px' }}>
                             <Button variant="contained" type="submit">Sign Up</Button>
                         </div>
+                        {success && 
+                        success !== "Registartion Complete" ? <div style={{ color: 'red' }}>{success}</div> :  <div style={{ color: 'green' }}>{success}</div>}
+                        
                         <div>
                             Are you registered yet?
                             <div style={{ marginTop: '8px' }}>
@@ -131,6 +139,7 @@ const RegistrationPage: React.FC = () => {
                         </form>
                 </div>
             </Grid>
+            
         </Grid>
     );
 

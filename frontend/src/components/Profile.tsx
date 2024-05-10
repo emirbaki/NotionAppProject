@@ -212,6 +212,7 @@ const ProfilePage: React.FC = () => {
                             </Button>
                         </div>
                         {error && <div style={{ color: 'red' }}>{error}</div>}
+            
                     </form>
                 </Box>
             </Box>
