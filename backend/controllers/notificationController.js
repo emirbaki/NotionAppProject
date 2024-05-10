@@ -6,9 +6,9 @@ import Notification from "../models/notificationModel.js"; // Assuming Notificat
 // @route   GET /api/notifications
 // @access  Private
 const getNotifications = asyncHandler(async (req, res) => {
-  const { userId } = req.params; // Assuming user ID is in the URL params
+  const { username } = req.params; // Assuming user ID is in the URL params
 
-  const notifications = await Notification.find({ user: userId });
+  const notifications = await Notification.find({ recipient: username });
 
   res.status(200).json(notifications);
 });
@@ -17,14 +17,14 @@ const getNotifications = asyncHandler(async (req, res) => {
 // @route   POST /api/notifications
 // @access  Private
 const createNotification = asyncHandler(async (req, res) => {
-  const { user, type, content } = req.body;
+  const { user, recipient, type, content } = req.body;
 
   // Basic validation (can be extended as needed)
   if (!user || !type) {
     throw new Error('Please add required fields (user, type)');
   }
 
-  const newNotification = new Notification({ user, type, content });
+  const newNotification = new Notification({ user, recipient, type, content });
 
   const savedNotification = await newNotification.save();
 

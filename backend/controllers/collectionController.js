@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { NoteCollection } from "../models/noteCollectionModel.js";
 import { User } from "../models/userModel.js";
+import { Types } from "mongoose";
 
 // @desc    Get Collections
 // @route   GET /api/collections
@@ -12,7 +13,8 @@ const getCollections = asyncHandler(async (req, res) => {
   res.status(200).send(collections);
 });
 const getCollectionsByUser = asyncHandler(async(req, res) => {
-  const collections = await NoteCollection.find({user: req.query.userId});
+  const userObjectId = new Types.ObjectId(req.user.id);
+  const collections = await NoteCollection.find({user: userObjectId});
 
   res.status(200).send(collections);
 }) 

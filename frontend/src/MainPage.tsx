@@ -28,16 +28,19 @@ const MainPage: React.FC = () => {
         // readNotes();
         readProfile();
         readCollections(userId);
-    }, [userId]);
+    }, []);
 
     const readProfile = async () => {
         try {
+            const token = sessionStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const response = axios.get<User>(`http://localhost:3000/profile/${_username}`);
             response.then((user) => {
                 sessionStorage.setItem("email", user.data.email);
                 sessionStorage.setItem("name", user.data.name);
                 sessionStorage.setItem("surname", user.data.surname);
                 userId = user.data._id;
+                console.log(userId + "userid bu");
             });
         } catch (error) {
             console.error('Error fetching notes:', error);
@@ -74,10 +77,13 @@ const MainPage: React.FC = () => {
 
     const readCollections = async (userId: string) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
+            console.log("token: " + token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-            const response = await axios.get<Collection[]>(`http://localhost:3000/collections/?userId=${userId}`, );
+            const response = await axios.get<Collection[]>(`http://localhost:3000/collections/getByUser`,{ params: {
+                userId: userId
+            } });
 
             setCollections(response.data);
         } catch (error) {
@@ -88,7 +94,7 @@ const MainPage: React.FC = () => {
     const deleteCollection = async(id: string) => {
         console.log("Deleting note with ID:", id);
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             await axios.delete(`http://localhost:3000/collections/${id}`);
@@ -104,7 +110,7 @@ const MainPage: React.FC = () => {
                     <Typography variant="h6" color="inherit">
                         My Notes
                     </Typography>
-                    <NotificationMenu userId={''}></NotificationMenu>
+                    <NotificationMenu username={_username}></NotificationMenu>
                     <Link to="/">
                         <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
                     </Link>

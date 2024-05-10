@@ -40,7 +40,7 @@ const EditableNote: React.FC<NoteProps> = ({ _id, title, content, onUpdate, onSh
 
   const updateCollectionTitle = async (newTitle: string) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       console.log("token bu: " + token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 

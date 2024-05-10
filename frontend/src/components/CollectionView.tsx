@@ -5,6 +5,7 @@ import { AddCircleOutline, Edit, MoreHorizRounded, Save } from '@mui/icons-mater
 import EditableNote from './EditableNote';
 import { Collection, Note } from '../utils/Interfaces';
 import axios from 'axios';
+import ShareDialog from './ShareDialog';
 
 async function fetchNotes(id: string): Promise<Note[]> {
     try {
@@ -55,6 +56,18 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [newNoteTitle, setNewNoteTitle] = useState<string>('');
     const [newNoteContent, setNewNoteContent] = useState<string>('');
+    const [openShareDialog, setOpenShareDialog] = useState<boolean>(false);
+
+    // Function to open the ShareDialog
+    const handleShare = () => {
+        setOpenShareDialog(true);
+    };
+    
+    // Function to close the ShareDialog
+    const handleCloseShareDialog = () => {
+        setOpenShareDialog(false);
+    };
+
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -78,7 +91,7 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
 
     const updateCollectionTitle = async (newTitle: string) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             console.log("token bu: " + token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
@@ -100,7 +113,7 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
 
     const readNotes = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             setNotes(await fetchNotes(id));
@@ -120,7 +133,7 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
 
     const handleSaveNote = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             // Send a POST request to create a new note
@@ -141,9 +154,9 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
     const deleteNote = async (noteid: string) => {
         console.log("Deleting note with ID:", id);
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            const resp = await axios.delete(`http://localhost:3000/collections/${id}/note/${noteid}`)
+            await axios.delete(`http://localhost:3000/collections/${id}/note/${noteid}`)
             await axios.delete(`http://localhost:3000/notes/${noteid}`);
             setNotes(notes.filter((note) => note._id !== noteid));
         } catch (error) {
@@ -200,7 +213,7 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                             anchorReference="anchorPosition"
                             anchorPosition={{ top: anchorEl ? anchorEl.getBoundingClientRect().bottom : 0, left: anchorEl ? anchorEl.getBoundingClientRect().left : 0 }}
                         >
-                            <MenuItem onClick={onShare}>Share</MenuItem>
+                            <MenuItem onClick={handleShare}>Share</MenuItem>
                             <MenuItem onClick={handleDelete}>Delete</MenuItem>
                         </Menu>
                     </div>
@@ -250,6 +263,7 @@ const CollectionObject = ({ id, title, onUpdateNote, onShare, deleteCollection }
                     <Button onClick={handleSaveNote}>Save</Button>
                 </DialogActions>
             </Dialog>
+            <ShareDialog open={openShareDialog} onClose={handleCloseShareDialog} collectionName={title}/>
         </Root>
     );
 };

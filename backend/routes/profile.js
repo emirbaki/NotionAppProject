@@ -69,6 +69,7 @@ import express from 'express';
 import asyncHandler from 'express-async-handler';
 
 import {User} from '../models/userModel.js'; // Assuming User model is in models/userModel.js
+import protect from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -85,7 +86,7 @@ const getUserByUsername = asyncHandler(async (req, res) => {
     return; // Exit the function early to prevent sending unnecessary data
   }
 
-  res.status(200).json({ username: user.username, email: user.email, name: user.name, surname: user.surname }); // Don't send password
+  res.status(200).json({ username: user.username, email: user.email, name: user.name, surname: user.surname, _id: req.user._id}); // Don't send password
 });
 
 // @desc    Update User Password
@@ -126,7 +127,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'User deleted successfully' });
 });
 
-router.get('/:username', getUserByUsername);
+router.get('/:username', protect, getUserByUsername);
 router.post('/update', updateUserPassword);
 router.post('/delete', deleteUser);
 

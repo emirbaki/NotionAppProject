@@ -38,7 +38,7 @@ const capitalizeFirstLetter = (str) => {
 
 const handleLogout = async () => {
     sessionStorage.clear();
-
+    
 };
 
 

@@ -16,7 +16,8 @@ const router = express.Router();
 // Middleware to protect routes, assuming you have authentication middleware
 router.use(protect);
 
-router.route('/').get(getCollections).post(createCollection).get(getCollectionsByUser);
+router.route('/getByUser').get(getCollectionsByUser);
+router.route('/').get(getCollections).post(createCollection);
 router.route('/:id').delete(deleteCollection).get(getCollection).put(updateCollection);
 router.route('/:id/note').put(InsertNoteIntoCollection);
 router.route('/:id/note/:noteId').delete(DeleteNoteFromCollection);
