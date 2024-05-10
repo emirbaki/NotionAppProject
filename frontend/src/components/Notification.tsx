@@ -4,6 +4,7 @@ import { Notification as NotificationModel } from '../utils/Interfaces'; // Assu
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import axios from 'axios';
 
 // Define props interface for Notification component
 interface NotificationProps {
@@ -61,12 +62,11 @@ const NotificationMenu: React.FC<MyComponentProps> = ({ username }) => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/notifications/${username}`); // Example API call
-      if (!response.ok) {
+      const response = await axios.get<NotificationModel[]>(`http://localhost:3000/api/notifications/${username}`); // Example API call
+      if (!response.status) {
         throw new Error('Failed to fetch notifications');
       }
-      const data = await response.json();
-      setNotifications(data); // Update state with fetched notifications
+      setNotifications(response.data); // Update state with fetched notifications
     } catch (error) {
       console.error('Error fetching notifications:', error);
       // Handle errors appropriately, e.g., display an error message

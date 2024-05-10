@@ -29,6 +29,7 @@ interface User {
 interface Notification {
     _id: string;
     user: string;
+    recipient: string;
     type: string;
     content?: string;
     read: boolean;

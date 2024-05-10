@@ -65,7 +65,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ open, onClose, collectionName
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             // Send notification to other user
                 selectedUsers.forEach(async (selectedUserId) => {
-                await axios.post('http://localhost:3000/notifications/', {
+                await axios.post('http://localhost:3000/api/notifications/', {
                     user: _username, // Sender ID
                     recipient: selectedUserId, // Recipient ID
                     type: 'sharing_request', // Notification type
@@ -80,16 +80,16 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ open, onClose, collectionName
         }
     };
 
-    const handleCheckboxChange = (userId: string) => {
+    const handleCheckboxChange = (userId: string, username: string) => {
         // Find the index of the user in the selectedUsers array
-        const selectedIndex = selectedUsers.indexOf(userId);
+        const selectedIndex = selectedUsers.indexOf(username);
 
         // If the user is not already selected, add it to the selectedUsers array
         if (selectedIndex === -1) {
-            setSelectedUsers(prevSelectedUsers => [...prevSelectedUsers, userId]);
+            setSelectedUsers(prevSelectedUsers => [...prevSelectedUsers, username]);
         } else {
             // If the user is already selected, remove it from the selectedUsers array
-            setSelectedUsers(prevSelectedUsers => prevSelectedUsers.filter((id) => id !== userId));
+            setSelectedUsers(prevSelectedUsers => prevSelectedUsers.filter((id) => id !== username));
         }
     };
 
@@ -102,7 +102,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ open, onClose, collectionName
                         key={user._id}
                         control={
                             <div>
-                                <Checkbox checked={selectedUsers.includes(user._id)} onChange={() => handleCheckboxChange(user._id)} />
+                                <Checkbox checked={selectedUsers.includes(user.username)} onChange={() => handleCheckboxChange(user._id, user.username)} />
                                 <Avatar {...stringAvatar(capitalizeFirstLetter(capitalizeFirstLetter(user.name) + ' ' + capitalizeFirstLetter(user.surname)))} sx={{ bgcolor: stringToColor(capitalizeFirstLetter(user.name) + ' ' + capitalizeFirstLetter(user.surname)) }} />
                             </div>
                         }// Set checked state based on existing sharing status

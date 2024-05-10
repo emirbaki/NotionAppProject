@@ -9,7 +9,8 @@ const router = express.Router();
 // Middleware to protect routes, assuming you have authentication middleware
 // router.use(protect);
 
-router.route('/').get(getNotifications).post(createNotification);
+router.route('/').post(createNotification);
+router.route('/:username').get(getNotifications);
 router.route('/:id').put(updateNotification).delete(deleteNotification);
 
 export default router;

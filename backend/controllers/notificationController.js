@@ -7,6 +7,7 @@ import Notification from "../models/notificationModel.js"; // Assuming Notificat
 // @access  Private
 const getNotifications = asyncHandler(async (req, res) => {
   const { username } = req.params; // Assuming user ID is in the URL params
+  console.log(username);
 
   const notifications = await Notification.find({ recipient: username });
 
