@@ -22,6 +22,8 @@ const ProfilePage: React.FC = () => {
 
     const _username = sessionStorage.getItem("username");
     const _password = sessionStorage.getItem("password");
+    const _admin = sessionStorage.getItem("admin");
+
 
     if (_username == null || _password == null) {
         window.location.href = "http://localhost:3001/login";
@@ -101,6 +103,15 @@ const ProfilePage: React.FC = () => {
                     <Link to="/">
                         <HomeIcon sx={{ marginLeft: '20px', marginTop: '3px' }} fontSize="medium" />
                     </Link>
+                    {_admin === "true" ? (
+                        <Link to="/controlpanel">
+                            <Button variant="contained" disableElevation={true}>Control Panel</Button>
+                        </Link>
+                    ) : (
+                        <div>
+
+                        </div>
+                    )}
                     <Avatar {...stringAvatar(capitalizeFirstLetter(avatar))} sx={{ marginLeft: '1100px', bgcolor: stringToColor(avatar) }} />
                     <Link to="/profile">
                         <Button variant="contained" disableElevation={true}>Profile</Button>

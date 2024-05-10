@@ -24,6 +24,7 @@ interface User {
     name: string;
     surname: string;
     token: string;
+    admin: boolean;
 }
 interface Notification {
     _id: string;
